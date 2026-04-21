@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mauro San Martin - Portfolio OS XP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        @font-face {
+            font-family: 'Tahoma';
+            src: local('Tahoma');
+        }
+
+        :root {
+            --xp-blue: #0058e4;
+            --xp-taskbar: linear-gradient(to bottom, #245edb 0%, #3f8cf3 9%, #245edb 18%, #245edb 92%, #1941a5 100%);
+            --xp-window-header: linear-gradient(to bottom, #0058e4 0%, #3b8cf8 10%, #1e79f0 40%, #0058e4 100%);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: "Tahoma", sans-serif;
+            background: url('https://img2.wallspic.com/crops/8/2/4/3/7/173428/173428-windows_xp-microsoft_windows-microsoft_corporation-sistema_operativo-paisaje_natural-1920x1080.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            user-select: none;
+        }
+
+        /* --- 1. SECUENCIA DE ARRANQUE EXACTA --- */
+        #boot-sequence {
+            position: fixed; inset: 0; z-index: 999999;
+            display: flex; flex-direction: column; transition: opacity 0.3s ease;
+        }
+        
+        #boot-screen {
+            background: black; width: 100%; height: 100%; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; position: absolute; top: 0; left: 0; z-index: 2;
+            transition: opacity 0.3s ease;
+        }
+
+        .boot-logo-container {
+            display: flex; align-items: center; gap: 15px; margin-top: -50px;
+        }
+        .boot-logo-img { width: 140px; }
+        .boot-text { display: flex; flex-direction: column; color: white; font-family: 'Franklin Gothic Medium', Arial, sans-serif; }
+        .boot-text-microsoft { font-size: 20px; font-weight: normal; margin-bottom: -15px; }
+        .boot-text-windows { font-size: 72px; font-weight: bold; display: flex; align-items: flex-end; }
+        .boot-text-xp { font-size: 32px; color: #fc6b0b; font-weight: normal; margin-bottom: 25px; margin-left: 5px; }
+
+        .loading-bar-container {
+            margin-top: 60px; width: 160px; height: 16px; border: 1px solid #7B8BA5; border-radius: 4px;
+            background: black; padding: 2px; position: relative; overflow: hidden;
+        }
+        .loading-blocks {
+            position: absolute; height: 10px; display: flex; gap: 2px;
+            animation: boot-scroll 2s infinite linear;
+        }
+        .loading-block {
+            width: 9px; height: 10px; background: linear-gradient(to bottom, #2b4997 0%, #436ee6 50%, #2b4997 100%);
+            border-radius: 1px;
+        }
+        @keyframes boot-scroll { 0% { left: -40px; } 100% { left: 160px; } }
+
+        .boot-copyright { position: absolute; bottom: 20px; left: 30px; color: #aaa; font-size: 12px; }
+        .boot-microsoft-bottom { position: absolute; bottom: 20px; right: 30px; color: white; font-size: 24px; font-weight: bold; font-style: italic; }
+
+        /* PANTALLA WELCOME EXACTA */
+        #welcome-screen {
+            background: #5a7edc; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1;
+            display: flex; align-items: center; justify-content: center; flex-direction: column;
+            transition: opacity 0.5s ease;
+        }
+        .welcome-band-top {
+            position: absolute; top: 0; width: 100%; height: 90px;
+            background: linear-gradient(to bottom, #002D96, #0045D6); border-bottom: 2px solid #E68B2C;
+        }
+        .welcome-band-bottom {
+            position: absolute; bottom: 0; width: 100%; height: 90px;
+            background: linear-gradient(to bottom, #0045D6, #002D96); border-top: 2px solid #E68B2C;
+        }
+        .welcome-text { font-family: 'Trebuchet MS', Arial, sans-serif; font-size: 42px; color: white; font-style: italic; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); z-index: 10; }
+
+        /* --- 2. BARRA DE TAREAS Y TRAY EXACTOS --- */
+        .taskbar {
+            position: fixed; bottom: 0; width: 100%; height: 30px; background: var(--xp-taskbar);
+            display: flex; align-items: center; z-index: 10000; box-shadow: 0 -1px 2px rgba(0,0,0,0.4);
+        }
+
+        .start-button {
+            height: 100%; padding: 0 15px 0 10px;
+            background: linear-gradient(to bottom, #3eb45c 0%, #59c864 10%, #319d48 50%, #207e32 100%);
+            color: white; font-weight: bold; font-style: italic; display: flex; align-items: center;
+            border-top-right-radius: 12px; border-bottom-right-radius: 12px; cursor: pointer;
+            box-shadow: inset 1px 1px 2px rgba(255,255,255,0.5), 2px 0 3px rgba(0,0,0,0.5); border: none; text-shadow: 1px 1px 2px rgba(0,0,0,0.6); font-size: 14px;
+        }
+        .start-button:hover { filter: brightness(1.1); }
+        .start-button:active { box-shadow: inset 2px 2px 4px rgba(0,0,0,0.5); }
+
+        .tray-area {
+            background: #09adff; height: 100%; padding: 0 12px; display: flex; align-items: center;
+            border-left: 1px solid #104ab0; box-shadow: inset 1px 0 2px rgba(255,255,255,0.3); gap: 6px;
+        }
+
+        /* --- 3. MENÚ INICIO Y TODOS LOS PROGRAMAS --- */
+        #start-menu {
+            position: fixed; bottom: 30px; left: 0; width: 400px; height: 500px;
+            background: #fff; border: 2px solid #0831d9; border-top-left-radius: 6px; border-top-right-radius: 6px;
+            box-shadow: 3px -3px 10px rgba(0,0,0,0.5); display: none; flex-direction: column; z-index: 9999;
+        }
+
+        .start-header {
+            height: 60px; background: linear-gradient(to bottom, #1868ce 0%, #0e60cb 100%);
+            display: flex; align-items: center; padding: 0 8px; color: white; border-bottom: 2px solid #f68b1f; border-top-left-radius: 4px; border-top-right-radius: 4px;
+        }
+        .start-header img { width: 44px; height: 44px; border: 2px solid white; border-radius: 4px; box-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
+
+        .start-body { flex: 1; display: flex; background: #d3e5fa; }
+        .start-left { width: 50%; background: white; display: flex; flex-direction: column; position: relative; }
+        .start-right { width: 50%; background: #d3e5fa; border-left: 1px solid #95bcee; padding: 5px; }
+
+        .start-items-container { padding: 5px; flex: 1; overflow: hidden; }
+        .start-item {
+            display: flex; align-items: center; padding: 5px 6px; cursor: pointer; font-size: 11px;
+            gap: 8px; border: 1px solid transparent; border-radius: 2px;
+        }
+        .start-item:hover { background: #2f71cd; color: white; }
+        .start-item img { width: 30px; height: 30px; object-fit: contain; }
+        .start-right .start-item { font-weight: bold; color: #00136b; }
+        .start-right .start-item:hover { color: white; }
+
+        /* ALL PROGRAMS MODO EXACTO */
+        .all-programs-wrapper {
+            position: absolute; bottom: 0; width: 100%; height: 30px;
+            background: white; border-top: 1px solid #e0e0e0; display: flex; justify-content: center; align-items: center;
+        }
+        .all-programs-btn {
+            display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 11px; font-weight: bold; cursor: pointer; width: 100%; height: 100%;
+        }
+        .all-programs-btn:hover { background: #2f71cd; color: white; }
+        .ap-arrow {
+            display: inline-block; width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 6px solid #3eb45c;
+        }
+        .all-programs-btn:hover .ap-arrow { border-left-color: white; }
+
+        #all-programs-menu {
+            position: absolute; bottom: 0; left: 100%; width: 220px; background: white; border: 1px solid #0831d9;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.5); display: none; z-index: 10000; flex-direction: row; min-height: 350px;
+        }
+        .all-programs-wrapper:hover #all-programs-menu, #all-programs-menu:hover { display: flex; }
+        
+        .ap-banner {
+            width: 25px; background: linear-gradient(to bottom, #002d96 0%, #0055e5 100%);
+            display: flex; align-items: flex-end; justify-content: center; padding-bottom: 10px;
+        }
+        .ap-banner span {
+            color: white; font-weight: bold; font-size: 13px; transform: rotate(-90deg); white-space: nowrap; font-family: 'Tahoma', sans-serif; letter-spacing: 1px;
+        }
+        
+        .ap-list { flex: 1; padding: 2px; display: flex; flex-direction: column; background: white;}
+        .ap-item { display: flex; align-items: center; gap: 8px; padding: 4px 6px; font-size: 11px; cursor: pointer; }
+        .ap-item:hover { background: #2f71cd; color: white; }
+        .ap-item img { width: 20px; height: 20px; }
+
+        .start-footer {
+            height: 38px; background: linear-gradient(to right, #428add 0%, #3078d7 100%);
+            display: flex; align-items: center; justify-content: flex-end; padding: 0 12px; gap: 15px;
+        }
+        .footer-btn { display: flex; align-items: center; color: white; font-size: 11px; cursor: pointer; gap: 6px; }
+        .footer-btn:hover { filter: brightness(1.2); }
+
+        /* --- VENTANAS XP Y ESCRITORIO --- */
+        .window {
+            position: absolute; background: #ece9d8; border: 3px solid #0058e4; border-top-left-radius: 8px; border-top-right-radius: 8px;
+            box-shadow: 4px 4px 15px rgba(0,0,0,0.5); display: none; flex-direction: column; min-width: 300px;
+        }
+        .window-header { background: var(--xp-window-header); height: 30px; display: flex; align-items: center; justify-content: space-between; padding: 0 5px; color: white; font-weight: bold; font-size: 13px; }
+        .title-drag-area { flex: 1; height: 100%; display: flex; align-items: center; cursor: grab; text-shadow: 1px 1px 1px rgba(0,0,0,0.5); }
+        .title-drag-area:active { cursor: grabbing; }
+        .window-controls { display: flex; gap: 3px; }
+        .control-btn {
+            width: 22px; height: 22px; border: 1px solid white; border-radius: 3px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; font-size: 11px; box-shadow: inset 1px 1px 2px rgba(255,255,255,0.4);
+        }
+        .btn-close { background: linear-gradient(to bottom, #e8635c, #d93931); }
+        .btn-min, .btn-max { background: linear-gradient(to bottom, #4a8df8, #0058e4); }
+        .window-content { flex: 1; background: white; overflow: auto; display: flex; flex-direction: column; }
+        .maximized { top: 0 !important; left: 0 !important; width: 100% !important; height: calc(100vh - 30px) !important; border-radius: 0; }
+
+        .desktop-icon {
+            width: 85px; margin: 12px 10px; display: flex; flex-direction: column; align-items: center;
+            color: white; text-shadow: 1px 1px 3px rgba(0,0,0,1); cursor: pointer; text-align: center; font-size: 11px; padding: 5px;
+        }
+        .desktop-icon img { width: 40px; height: 40px; margin-bottom: 6px; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.6)); }
+        .desktop-icon:hover { background: rgba(255,255,255,0.1); border-radius: 3px; }
+
+        /* EXPLORADOR */
+        .explorer-toolbar { background: #ece9d8; border-bottom: 1px solid #aca899; display: flex; flex-direction: column; font-size: 11px; }
+        .explorer-menu { display: flex; gap: 15px; padding: 2px 10px; border-bottom: 1px solid #fff; }
+        .explorer-actions { display: flex; align-items: center; padding: 4px 10px; gap: 15px; border-top: 1px solid #aca899; background: #ece9d8; }
+        .action-btn { display: flex; align-items: center; gap: 5px; padding: 2px 6px; cursor: pointer; border: 1px solid transparent; }
+        .action-btn:hover { border: 1px solid #aca899; border-radius: 3px; background: #fff; box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1); }
+        .explorer-address { background: #ece9d8; padding: 4px 10px; border-top: 1px solid #aca899; display: flex; align-items: center; gap: 5px; }
+        .address-box { background: white; border: 1px solid #7f9db9; flex: 1; padding: 3px 5px; display: flex; align-items: center; gap: 5px; box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1); }
+        .explorer-body { flex: 1; display: flex; background: #fff; border-top: 1px solid #7f9db9; }
+        .xp-sidebar { width: 220px; background: linear-gradient(to bottom, #74a0ea 0%, #4f80dd 100%); padding: 15px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; border-right: 1px solid #7f9db9;}
+        .xp-sidebar-box { background: #d6e4f9; border-top-left-radius: 4px; border-top-right-radius: 4px; overflow: hidden; box-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+        .xp-sidebar-header { background: linear-gradient(to right, #ffffff 0%, #c4d7f5 100%); color: #00136b; font-weight: bold; padding: 4px 8px; font-size: 11px; display: flex; align-items: center; justify-content: space-between;}
+        .xp-sidebar-content { padding: 10px; display: flex; flex-direction: column; gap: 8px; font-size: 11px; }
+        .sidebar-link { display: flex; align-items: center; gap: 6px; color: #00136b; cursor: pointer; }
+        .sidebar-link:hover { text-decoration: underline; color: #245edb; }
+        .explorer-main { flex: 1; padding: 20px; overflow-y: auto; background: white; }
+        .explorer-item { display: inline-flex; flex-direction: column; align-items: center; width: 110px; padding: 10px; cursor: pointer; border: 1px solid transparent; text-align: center; vertical-align: top;}
+        .explorer-item:hover { background: #e5f3ff; border: 1px solid #7daef3; border-radius: 3px; }
+        .explorer-item img { width: 44px; height: 44px; object-fit: contain; margin-bottom: 5px; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));}
+
+        /* Control de Volumen Flotante */
+        #volume-popup {
+            display: none; position: absolute; bottom: 30px; right: 20px; background: #ece9d8;
+            border: 1px solid #7f9db9; box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+            padding: 10px; width: 80px; flex-direction: column; align-items: center; z-index: 10001;
+        }
+        input[type=range][orient=vertical] { writing-mode: bt-lr; -webkit-appearance: slider-vertical; height: 100px; width: 20px; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. SECUENCIA DE ARRANQUE IDÉNTICA (BOOT + WELCOME) -->
+    <div id="boot-sequence">
+        <!-- PANTALLA NEGRA LOGO -->
+        <div id="boot-screen">
+            <div class="boot-logo-container">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Windows_XP_logo.svg" class="boot-logo-img">
+            </div>
+            <div class="loading-bar-container">
+                <div class="loading-blocks">
+                    <div class="loading-block"></div><div class="loading-block"></div><div class="loading-block"></div>
+                </div>
+            </div>
+            <div class="boot-copyright">Copyright © Microsoft Corporation</div>
+            <div class="boot-microsoft-bottom">Microsoft</div>
+        </div>
+        
+        <!-- PANTALLA AZUL BIENVENIDO -->
+        <div id="welcome-screen">
+            <div class="welcome-band-top"></div>
+            <h1 class="welcome-text">Welcome</h1>
+            <div class="welcome-band-bottom"></div>
+        </div>
+    </div>
+
+    <!-- ESCRITORIO -->
+    <div class="flex flex-col h-full flex-wrap content-start p-2 gap-2" id="desktop">
+        <div class="desktop-icon" onclick="openExplorer('Proyectos')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Folder_icon_%28Windows_XP%29.png/120px-Folder_icon_%28Windows_XP%29.png" alt="Carpeta">
+            <span>Mis Proyectos</span>
+        </div>
+        <div class="desktop-icon" onclick="openExplorer('Juegos')">
+            <img src="https://win98icons.alexmeub.com/icons/png/joystick-0.png" alt="Juegos">
+            <span>Juegos</span>
+        </div>
+        <div class="desktop-icon" onclick="openPdfViewer('cv')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/120px-PDF_file_icon.svg.png" alt="PDF">
+            <span>Mi Curriculum.pdf</span>
+        </div>
+        <div class="desktop-icon" onclick="openPdfViewer('cert')">
+            <!-- Icono nuevo de Diploma para Certificado -->
+            <img src="https://img.icons8.com/color/96/000000/certificate.png" alt="Certificado">
+            <span>Certificado de Inglés.pdf</span>
+        </div>
+    </div>
+
+    <!-- MENÚ INICIO -->
+    <div id="start-menu">
+        <div class="start-header">
+            <img src="https://ui-avatars.com/api/?name=Mauro+San+Martin&background=random" alt="User">
+            <span class="ml-3 font-bold text-lg" style="text-shadow: 1px 1px 2px black;">Mauro San Martin</span>
+        </div>
+        <div class="start-body">
+            <!-- Columna Izquierda Blanca -->
+            <div class="start-left">
+                <div class="start-items-container">
+                    <div class="start-item" onclick="window.open('https://papamasro.github.io/transporte/', '_blank'); toggleStartMenu();">
+                        <img src="https://win98icons.alexmeub.com/icons/png/msie1-4.png">
+                        <div><b>Internet Explorer</b><br><span class="text-gray-400">Radar AMBA</span></div>
+                    </div>
+                    <div class="start-item" onclick="window.open('mailto:mau.sm@hotmail.es'); toggleStartMenu();">
+                        <img src="https://win98icons.alexmeub.com/icons/png/message_envelope_open-0.png">
+                        <div><b>Outlook Express</b><br><span class="text-gray-400">Enviar Mail</span></div>
+                    </div>
+                    <hr class="my-1 border-gray-200">
+                    <div class="start-item" onclick="openExplorer('Proyectos'); toggleStartMenu();">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Folder_icon_%28Windows_XP%29.png/120px-Folder_icon_%28Windows_XP%29.png" style="width:24px; height:24px; margin:0 3px;">
+                        <span>Ver Mis Proyectos</span>
+                    </div>
+                    <div class="start-item" onclick="openExplorer('Juegos'); toggleStartMenu();">
+                        <img src="https://win98icons.alexmeub.com/icons/png/joystick-0.png" style="width:24px; height:24px; margin:0 3px;">
+                        <span>Juegos Clásicos</span>
+                    </div>
+                </div>
+                
+                <!-- BOTÓN "TODOS LOS PROGRAMAS" IDÉNTICO AL SCREENSHOT -->
+                <div class="all-programs-wrapper group">
+                    <div class="all-programs-btn">
+                        <span>Todos los programas</span>
+                        <span class="ap-arrow"></span>
+                    </div>
+                    
+                    <!-- POPUP MENÚ ALL PROGRAMS -->
+                    <div id="all-programs-menu">
+                        <div class="ap-banner">
+                            <span>Windows XP Professional</span>
+                        </div>
+                        <div class="ap-list">
+                            <div class="ap-item"><img src="https://win98icons.alexmeub.com/icons/png/search_computer-0.png"> Set Program Access and Defaults</div>
+                            <div class="ap-item"><img src="https://win98icons.alexmeub.com/icons/png/world-1.png"> Windows Catalog</div>
+                            <div class="ap-item">
+                                <!-- SVGs incrustados para íconos puros -->
+                                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" fill="none" stroke="#f68b1f" stroke-width="2"/></svg>
+                                Windows Update
+                            </div>
+                            <hr class="my-1 border-gray-300 mx-2">
+                            <div class="ap-item"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png"> Accessories</div>
+                            <div class="ap-item" onclick="openExplorer('Juegos');"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png"> Games</div>
+                            <div class="ap-item"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png"> Startup</div>
+                            <hr class="my-1 border-gray-300 mx-2">
+                            <div class="ap-item"><img src="https://win98icons.alexmeub.com/icons/png/msie1-4.png"> Internet Explorer</div>
+                            <div class="ap-item"><img src="https://win98icons.alexmeub.com/icons/png/message_envelope_open-0.png"> Outlook Express</div>
+                            <div class="ap-item"><img src="https://win98icons.alexmeub.com/icons/png/media_player-1.png"> Windows Media Player</div>
+                            <div class="ap-item" onclick="window.open('https://github.com/papamasro/', '_blank')"><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png"> Mi GitHub</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Columna Derecha Celeste -->
+            <div class="start-right">
+                <div class="start-item" onclick="openPdfViewer('cv'); toggleStartMenu();">
+                    <img src="https://win98icons.alexmeub.com/icons/png/directory_open_file_mydocs-4.png" style="width:24px;"> Mi Curriculum
+                </div>
+                <div class="start-item" onclick="openPdfViewer('cert'); toggleStartMenu();">
+                    <img src="https://win98icons.alexmeub.com/icons/png/directory_open_file_mydocs-4.png" style="width:24px;"> Certificado de Inglés
+                </div>
+                <div class="start-item" onclick="openExplorer('Proyectos'); toggleStartMenu();">
+                    <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-4.png" style="width:24px;"> Mi PC
+                </div>
+                <hr class="my-1 border-blue-300 mx-1">
+                <div class="start-item">
+                    <img src="https://win98icons.alexmeub.com/icons/png/gears-0.png" style="width:24px;"> Panel de Control
+                </div>
+                <div class="start-item">
+                    <img src="https://win98icons.alexmeub.com/icons/png/search_computer-0.png" style="width:24px;"> Buscar
+                </div>
+                <div class="start-item">
+                    <img src="https://win98icons.alexmeub.com/icons/png/help_book_computer-0.png" style="width:24px;"> Ayuda y soporte técnico
+                </div>
+            </div>
+        </div>
+        <div class="start-footer">
+            <div class="footer-btn"><img src="https://win98icons.alexmeub.com/icons/png/key_win-0.png" class="w-5 h-5"> Log Off</div>
+            <div class="footer-btn"><img src="https://win98icons.alexmeub.com/icons/png/shut_down_cool-5.png" class="w-5 h-5"> Turn Off Computer</div>
+        </div>
+    </div>
+
+    <!-- VENTANA: Explorador Universal (Proyectos / Juegos) -->
+    <div id="win-explorer" class="window" style="width: 780px; height: 500px; top: 80px; left: 100px;">
+        <div class="window-header" onmousedown="dragWindow(event, 'win-explorer')">
+            <div class="title-drag-area">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Folder_icon_%28Windows_XP%29.png/120px-Folder_icon_%28Windows_XP%29.png" class="w-4 h-4 mr-2">
+                <span id="explorer-title">Explorador</span>
+            </div>
+            <div class="window-controls">
+                <div class="control-btn btn-min" onclick="closeWindow('win-explorer')">_</div>
+                <div class="control-btn btn-max" onclick="maximizeWindow('win-explorer')">□</div>
+                <div class="control-btn btn-close" onclick="closeWindow('win-explorer')">X</div>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="explorer-toolbar">
+                <div class="explorer-menu">
+                    <span>Archivo</span><span>Edición</span><span>Ver</span><span>Favoritos</span><span>Herramientas</span><span>Ayuda</span>
+                </div>
+                <div class="explorer-actions">
+                    <div class="action-btn text-gray-400"><i class="fa-solid fa-circle-arrow-left text-green-600 opacity-50"></i> Atrás</div>
+                    <div class="action-btn text-gray-400"><i class="fa-solid fa-circle-arrow-right text-green-600 opacity-50"></i></div>
+                    <div class="action-btn"><img src="https://win98icons.alexmeub.com/icons/png/directory_up-0.png" class="w-5 h-5"> Arriba</div>
+                    <div class="w-px h-6 bg-gray-400 mx-1"></div>
+                    <div class="action-btn"><img src="https://win98icons.alexmeub.com/icons/png/search_computer-0.png" class="w-5 h-5"> Búsqueda</div>
+                    <div class="action-btn"><img src="https://win98icons.alexmeub.com/icons/png/directory_open_file_mydocs-4.png" class="w-5 h-5"> Carpetas</div>
+                </div>
+                <div class="explorer-address">
+                    <span class="text-gray-600">Dirección</span>
+                    <div class="address-box">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Folder_icon_%28Windows_XP%29.png/120px-Folder_icon_%28Windows_XP%29.png" class="w-4 h-4">
+                        <span id="explorer-path">C:\</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="explorer-body">
+                <!-- Panel Lateral Azul -->
+                <div class="xp-sidebar">
+                    <div class="xp-sidebar-box">
+                        <div class="xp-sidebar-header"><span>Tareas de archivo</span> <i class="fa-solid fa-angle-up text-blue-400"></i></div>
+                        <div class="xp-sidebar-content">
+                            <div class="sidebar-link"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" class="w-4 h-4"> Crear nueva carpeta</div>
+                            <div class="sidebar-link"><img src="https://win98icons.alexmeub.com/icons/png/world-1.png" class="w-4 h-4"> Publicar en Web</div>
+                        </div>
+                    </div>
+                    <div class="xp-sidebar-box">
+                        <div class="xp-sidebar-header"><span>Otros sitios</span> <i class="fa-solid fa-angle-up text-blue-400"></i></div>
+                        <div class="xp-sidebar-content">
+                            <div class="sidebar-link" onclick="openExplorer('Proyectos')"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Folder_icon_%28Windows_XP%29.png/120px-Folder_icon_%28Windows_XP%29.png" class="w-4 h-4"> Mis Proyectos</div>
+                            <div class="sidebar-link" onclick="openExplorer('Juegos')"><img src="https://win98icons.alexmeub.com/icons/png/joystick-0.png" class="w-4 h-4"> Juegos</div>
+                            <div class="sidebar-link"><img src="https://win98icons.alexmeub.com/icons/png/computer_explorer-4.png" class="w-4 h-4"> Mi PC</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Área de Iconos (Se llena con JS) -->
+                <div class="explorer-main">
+                    <div id="explorer-content" class="grid grid-cols-4 gap-4">
+                        <!-- Contenido dinámico -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VENTANA: Visor de PDF (Iframe para originales) -->
+    <div id="win-pdf" class="window" style="width: 850px; height: 650px; top: 40px; left: 150px;">
+        <div class="window-header" onmousedown="dragWindow(event, 'win-pdf')">
+            <div class="title-drag-area">
+                <i class="fa-brands fa-adobe text-xs mr-2 text-red-300"></i>
+                <span id="pdf-title">Acrobat Reader</span>
+            </div>
+            <div class="window-controls">
+                <div class="control-btn btn-min" onclick="closeWindow('win-pdf')">_</div>
+                <div class="control-btn btn-max" onclick="maximizeWindow('win-pdf')">□</div>
+                <div class="control-btn btn-close" onclick="closeWindow('win-pdf')">X</div>
+            </div>
+        </div>
+        <div class="window-content bg-[#525659] flex flex-col">
+            <div class="bg-gray-200 border-b border-gray-400 text-xs px-2 py-1 flex gap-4">
+                <span>File</span><span>Edit</span><span>View</span><span>Document</span><span>Tools</span><span>Window</span><span>Help</span>
+            </div>
+            <div id="pdf-container" class="flex-1 w-full bg-[#525659]">
+                <!-- Iframe se inyecta por JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- BARRA DE TAREAS Y BANDEJA DE SISTEMA -->
+    <div class="taskbar">
+        <button class="start-button" onclick="toggleStartMenu()">
+            <img src="https://win98icons.alexmeub.com/icons/png/windows-0.png" class="w-4 h-4 mr-1 filter invert"> Inicio
+        </button>
+        <div class="flex-1"></div>
+        <div class="tray-area relative">
+            <!-- Icono Safely Remove Hardware -->
+            <svg width="16" height="16" viewBox="0 0 16 16" title="Safely Remove Hardware" class="cursor-pointer hover:opacity-80">
+                <rect x="3" y="4" width="10" height="8" fill="#d4d0c8" stroke="#808080"/>
+                <circle cx="11" cy="11" r="4" fill="#3eb45c"/>
+                <path d="M9 11l1.5 1.5L13 9" fill="none" stroke="white" stroke-width="1.5"/>
+            </svg>
+
+            <!-- Icono de Windows Update: Escudo Amarillo XP original replica -->
+            <svg width="16" height="16" viewBox="0 0 16 16" title="Windows Update" class="cursor-pointer hover:opacity-80">
+                <path d="M8 1 L14 3 L14 9 C14 13 8 15 8 15 C8 15 2 13 2 9 L2 3 Z" fill="#ffcc00" stroke="#b38f00" stroke-width="1"/>
+                <path d="M8 4 L8 9 M8 11 L8 12" stroke="black" stroke-width="2" stroke-linecap="square"/>
+                <path d="M8 4 L8 9 M8 11 L8 12" stroke="white" stroke-width="1" stroke-linecap="square"/>
+            </svg>
+            
+            <!-- Icono de Volumen Clásico XP (Gris con ondas verdes) -->
+            <svg width="16" height="16" viewBox="0 0 16 16" title="Volume" class="cursor-pointer hover:opacity-80" onclick="toggleVolume()">
+                <path d="M3 6v4h2l3 3V3L5 6H3z" fill="#ccc" stroke="#888"/>
+                <path d="M10 5c1 1 1 5 0 6M12 3c2 2 2 8 0 10" fill="none" stroke="#22b14c" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            
+            <span id="clock" class="ml-1 text-white text-xs" style="font-family: 'Tahoma', sans-serif;">12:00 PM</span>
+            
+            <!-- POPUP de Volumen -->
+            <div id="volume-popup">
+                <span class="text-black mb-2 font-bold text-xs">Volumen</span>
+                <input type="range" orient="vertical" min="0" max="100" value="70">
+                <div class="mt-2 text-black text-xs flex items-center gap-1">
+                    <input type="checkbox" id="mute-cb"> <label for="mute-cb">Silencio</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- SECUENCIA DE ARRANQUE ---
+        window.onload = () => {
+            const bootScreen = document.getElementById('boot-screen');
+            const welcomeScreen = document.getElementById('welcome-screen');
+            const bootSequence = document.getElementById('boot-sequence');
+
+            // 1. Mostrar pantalla de carga negra por 3.5s
+            setTimeout(() => {
+                bootScreen.style.opacity = '0'; // Fade out logo negro
+                
+                setTimeout(() => {
+                    bootScreen.style.display = 'none';
+                    welcomeScreen.style.display = 'flex'; // Aparece pantalla Welcome azul
+                    
+                    // 2. Mostrar "Welcome" por 2s
+                    setTimeout(() => {
+                        welcomeScreen.style.opacity = '0';
+                        bootSequence.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            bootSequence.style.display = 'none'; // Mostrar el escritorio final
+                        }, 500);
+                    }, 2000);
+                }, 300);
+            }, 3500);
+        };
+
+        // --- RELOJ ---
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            const min = now.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            document.getElementById('clock').textContent = `${hours}:${min} ${ampm}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --- SISTEMA DE VENTANAS ---
+        let zIndexCounter = 1000;
+        
+        function toggleStartMenu() {
+            const menu = document.getElementById('start-menu');
+            menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function toggleVolume() {
+            const vol = document.getElementById('volume-popup');
+            vol.style.display = vol.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function closeWindow(id) { document.getElementById(id).style.display = 'none'; }
+        function maximizeWindow(id) { document.getElementById(id).classList.toggle('maximized'); }
+
+        function bringToFront(win) {
+            zIndexCounter++;
+            win.style.zIndex = zIndexCounter;
+        }
+
+        function dragWindow(e, id) {
+            const win = document.getElementById(id);
+            if(win.classList.contains('maximized')) return;
+            bringToFront(win);
+            
+            let pos1 = 0, pos2 = 0, pos3 = e.clientX, pos4 = e.clientY;
+            document.onmousemove = (event) => {
+                pos1 = pos3 - event.clientX; pos2 = pos4 - event.clientY;
+                pos3 = event.clientX; pos4 = event.clientY;
+                win.style.top = (win.offsetTop - pos2) + "px";
+                win.style.left = (win.offsetLeft - pos1) + "px";
+            };
+            document.onmouseup = () => { document.onmousemove = null; document.onmouseup = null; };
+        }
+
+        // --- EXPLORADOR DE ARCHIVOS Y JUEGOS ---
+        const folderData = {
+            'Proyectos': [
+                { name: 'Mi_GitHub.url', iconUrl: 'https://cdn-icons-png.flaticon.com/512/25/25231.png', link: 'https://github.com/papamasro/', isExe: false },
+                { name: 'Grupo_AND.exe', faIcon: 'fa-solid fa-helmet-safety text-orange-500', link: 'https://papamasro.github.io/grupoand2/', isExe: true },
+                { name: 'Radar_AMBA.exe', faIcon: 'fa-solid fa-bus text-blue-500', link: 'https://papamasro.github.io/transporte/', isExe: true },
+                { name: 'Luna_Roja.exe', faIcon: 'fa-solid fa-shirt text-red-500', link: 'https://papamasro.github.io/libreria/', isExe: true },
+                { name: 'Renacer.exe', faIcon: 'fa-solid fa-book-open text-green-500', link: 'https://papamasro.github.io/renacer/', isExe: true }
+            ],
+            'Juegos': [
+                { name: 'Duke_Nukem_3D.exe', iconUrl: 'https://static.wikia.nocookie.net/dukenukem/images/8/81/Nuke_it_by_nukkus-d33nfil-1_1.jpg', isExe: true, action: "alert('Error de sistema XP:\\nFalta el archivo DUK3D.GRP. Por favor inserte el CD-ROM del juego.')" },
+                { name: 'Doom.exe', iconUrl: 'https://cdn2.steamgriddb.com/icon_thumb/ef7d30fd7f6763d2c0c53229b27de2de.png', isExe: true, action: "alert('Error fatal de DOOM:\\nDOOM.WAD no encontrado en el directorio raíz.')" },
+                { name: 'CS_1.6.exe', iconUrl: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/a4efa9ec-7cdb-464d-8182-c354344eef2a/dbpjpqu-76f7e125-e8cb-47aa-b48c-92f0a335dd95.png/v1/fit/w_512,h_512,q_70,strp/counter_strike_1_6_hq_icon_by_fabritor100_dbpjpqu-375w-2x.jpg', isExe: true, action: "alert('Half-Life Launcher:\\nCould not connect to master game server. Verifique la conexión de red local.')" },
+                { name: 'Buscaminas.exe', iconUrl: 'https://win98icons.alexmeub.com/icons/png/minesweeper-0.png', link: 'https://minesweeperonline.com/', isExe: true }
+            ]
+        };
+
+        function openExplorer(folderName) {
+            const win = document.getElementById('win-explorer');
+            document.getElementById('explorer-title').innerText = folderName;
+            document.getElementById('explorer-path').innerText = `C:\\Mis Documentos\\${folderName}`;
+            
+            const content = document.getElementById('explorer-content');
+            content.innerHTML = '';
+            
+            folderData[folderName].forEach(item => {
+                let onclickAction = item.link ? `window.open('${item.link}', '_blank')` : item.action;
+                let visualIcon = item.iconUrl 
+                    ? `<img src="${item.iconUrl}" class="w-12 h-12 object-contain drop-shadow-md">`
+                    : `<i class="${item.faIcon} text-[44px] drop-shadow-md"></i>`;
+
+                content.innerHTML += `
+                    <div class="explorer-item" onclick="${onclickAction}">
+                        ${visualIcon}
+                        <span class="text-xs mt-2 font-bold break-words">${item.name}</span>
+                    </div>
+                `;
+            });
+
+            win.style.display = 'flex';
+            bringToFront(win);
+        }
+
+        // --- VISOR DE PDFS ---
+        function openPdfViewer(type) {
+            const win = document.getElementById('win-pdf');
+            const title = document.getElementById('pdf-title');
+            const container = document.getElementById('pdf-container');
+            
+            let fileSrc = '';
+            if(type === 'cv') {
+                title.innerText = 'Acrobat Reader - Curriculum.pdf';
+                fileSrc = 'Copia de CV MAURO SAN MARTIN.pdf';
+            } else if(type === 'cert') {
+                title.innerText = 'Acrobat Reader - Certificado de Ingles.pdf';
+                fileSrc = 'EF SET Certificate.pdf'; 
+            }
+
+            container.innerHTML = `
+                <div class="p-2 bg-yellow-100 text-yellow-800 text-xs text-center border-b border-yellow-300">
+                    Documento original: <b>${fileSrc}</b> (Si no lo ves, requiere que el PDF esté en el root de GitHub).
+                </div>
+                <iframe src="${fileSrc}" width="100%" height="100%" style="border: none; background: white;"></iframe>
+            `;
+
+            win.style.display = 'flex';
+            bringToFront(win);
+        }
+
+        // --- CERRAR MENÚS AL HACER CLIC AFUERA ---
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('start-menu');
+            const btn = document.querySelector('.start-button');
+            const popup = document.getElementById('all-programs-menu');
+            const volPopup = document.getElementById('volume-popup');
+            const volIcon = document.querySelector('.fa-volume-high');
+
+            if (menu.style.display === 'flex' && !menu.contains(e.target) && !btn.contains(e.target)) {
+                menu.style.display = 'none';
+            }
+            if (volPopup.style.display === 'flex' && !volPopup.contains(e.target) && e.target !== volIcon && e.target.tagName !== 'svg' && e.target.tagName !== 'path') {
+                volPopup.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
