@@ -28,6 +28,7 @@
             background: url('https://img2.wallspic.com/crops/8/2/4/3/7/173428/173428-windows_xp-microsoft_windows-microsoft_corporation-sistema_operativo-paisaje_natural-1920x1080.jpg') no-repeat center center fixed;
             background-size: cover;
             height: 100vh;
+            height: 100dvh; /* Soporte para navegadores móviles modernos */
             user-select: none;
         }
 
@@ -68,7 +69,7 @@
         #black-overlay { display: none; z-index: 99999999; } 
 
         .boot-logo-container { display: flex; align-items: center; gap: 15px; margin-top: -80px; }
-        .boot-logo-img { width: 280px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); } 
+        .boot-logo-img { width: 280px; max-width: 80vw; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); } 
 
         .loading-bar-container {
             margin-top: 80px; width: 160px; height: 16px; border: 2px solid #b2b2b2; border-radius: 4px;
@@ -95,23 +96,23 @@
             position: absolute; bottom: 0; width: 100%; height: 90px;
             background: linear-gradient(to bottom, #0045D6, #002D96); border-top: 2px solid #E68B2C;
         }
-        .welcome-text { font-family: 'Trebuchet MS', Arial, sans-serif; font-size: 42px; color: white; font-style: italic; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); z-index: 10; display: flex; align-items: center; gap: 15px;}
+        .welcome-text { font-family: 'Trebuchet MS', Arial, sans-serif; color: white; font-style: italic; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); z-index: 10; display: flex; align-items: center; gap: 15px;}
         .welcome-text img { width: 50px; }
         #shutdown-screen .welcome-text { font-size: 28px; font-style: normal; font-weight: normal; font-family: 'Tahoma', sans-serif;}
 
         #login-screen {
             background: #5a7edc; width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 9999995;
-            display: none; flex-direction: column;
+            display: none; flex-direction: column; overflow-y: auto;
         }
         #bsod-screen {
             position: fixed; inset: 0; z-index: 9999999; background-color: #0000AA; color: white;
             font-family: 'Lucida Console', Monaco, monospace; font-size: 15px; padding: 40px;
-            display: none; flex-direction: column; gap: 15px; white-space: pre-wrap;
+            display: none; flex-direction: column; gap: 15px; white-space: pre-wrap; overflow-y: auto;
         }
 
         /* --- 2. BARRA DE TAREAS Y TRAY --- */
         .taskbar {
-            position: fixed; bottom: 0; width: 100%; height: 30px; background: var(--xp-taskbar);
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 30px; background: var(--xp-taskbar);
             display: flex; align-items: center; z-index: 10000; box-shadow: 0 -1px 2px rgba(0,0,0,0.4);
         }
 
@@ -139,15 +140,15 @@
 
         .start-header {
             height: 60px; background: linear-gradient(to bottom, #1868ce 0%, #0e60cb 100%);
-            display: flex; align-items: center; padding: 0 8px; color: white; border-bottom: 2px solid #f68b1f; border-top-left-radius: 4px; border-top-right-radius: 4px;
+            display: flex; align-items: center; padding: 0 8px; color: white; border-bottom: 2px solid #f68b1f; border-top-left-radius: 4px; border-top-right-radius: 4px; flex-shrink: 0;
         }
         .start-header img { width: 44px; height: 44px; border: 2px solid white; border-radius: 4px; box-shadow: 1px 1px 3px rgba(0,0,0,0.5); background: white;}
 
-        .start-body { flex: 1; display: flex; background: #fff; position: relative; }
+        .start-body { flex: 1; display: flex; background: #fff; position: relative; overflow-y: hidden; }
         .start-left { width: 50%; background: white; display: flex; flex-direction: column; position: relative; }
         .start-right { width: 50%; background: #d3e5fa; border-left: 1px solid #95bcee; padding: 5px; }
 
-        .start-items-container { padding: 5px; flex: 1; overflow: hidden; }
+        .start-items-container { padding: 5px; flex: 1; overflow-y: auto; overflow-x: hidden; }
         .start-item {
             display: flex; align-items: center; padding: 5px 6px; cursor: pointer; font-size: 11px;
             gap: 8px; border: 1px solid transparent; border-radius: 2px;
@@ -158,7 +159,7 @@
         .start-right .start-item:hover { color: white; }
 
         .all-programs-wrapper {
-            position: absolute; bottom: 0; width: 100%; height: 30px;
+            bottom: 0; width: 100%; height: 30px; flex-shrink: 0;
             background: white; border-top: 1px solid #e0e0e0; display: flex; justify-content: center; align-items: center;
         }
         .all-programs-btn { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 11px; font-weight: bold; cursor: pointer; width: 100%; height: 100%; }
@@ -176,7 +177,7 @@
 
         .start-footer {
             height: 38px; background: linear-gradient(to right, #428add 0%, #3078d7 100%);
-            display: flex; align-items: center; justify-content: flex-end; padding: 0 12px; gap: 15px;
+            display: flex; align-items: center; justify-content: flex-end; padding: 0 12px; gap: 15px; flex-shrink: 0;
         }
         .footer-btn { display: flex; align-items: center; color: white; font-size: 11px; cursor: pointer; }
         .footer-btn:hover { filter: brightness(1.2); text-decoration: underline; }
@@ -184,21 +185,21 @@
         .xp-logoff-btn { width: 22px; height: 22px; background: linear-gradient(to bottom, #f5c43d, #d79905); border: 1px solid #b57a00; border-radius: 3px; display: flex; align-items: center; justify-content: center; margin-right: 5px; box-shadow: inset 1px 1px 2px rgba(255,255,255,0.5); }
         .xp-turnoff-btn { width: 22px; height: 22px; background: linear-gradient(to bottom, #e75c50, #cc2918); border: 1px solid #991c0e; border-radius: 3px; display: flex; align-items: center; justify-content: center; margin-right: 5px; box-shadow: inset 1px 1px 2px rgba(255,255,255,0.4); }
 
-        /* --- 4. VENTANAS XP REDIMENSIONABLES --- */
+        /* --- 4. VENTANAS XP --- */
         .window {
             position: absolute; background: #ece9d8; border: 3px solid #0058e4; border-top-left-radius: 8px; border-top-right-radius: 8px;
             box-shadow: 4px 4px 15px rgba(0,0,0,0.5); display: none; flex-direction: column; min-width: 300px;
             resize: both; overflow: hidden; padding-bottom: 2px;
         }
         .window-header { background: var(--xp-window-header); height: 30px; display: flex; align-items: center; justify-content: space-between; padding: 0 5px; color: white; font-weight: bold; font-size: 13px; flex-shrink: 0; }
-        .title-drag-area { flex: 1; height: 100%; display: flex; align-items: center; cursor: grab; text-shadow: 1px 1px 1px rgba(0,0,0,0.5); }
+        .title-drag-area { flex: 1; height: 100%; display: flex; align-items: center; cursor: grab; text-shadow: 1px 1px 1px rgba(0,0,0,0.5); overflow: hidden; white-space: nowrap;}
         .title-drag-area:active { cursor: grabbing; }
-        .window-controls { display: flex; gap: 3px; }
+        .window-controls { display: flex; gap: 3px; flex-shrink: 0;}
         .control-btn { width: 22px; height: 22px; border: 1px solid white; border-radius: 3px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; font-size: 11px; box-shadow: inset 1px 1px 2px rgba(255,255,255,0.4); }
         .btn-close { background: linear-gradient(to bottom, #e8635c, #d93931); }
         .btn-min, .btn-max { background: linear-gradient(to bottom, #4a8df8, #0058e4); }
         .window-content { flex: 1; background: white; overflow: auto; display: flex; flex-direction: column; }
-        .maximized { top: 0 !important; left: 0 !important; width: 100% !important; height: calc(100vh - 30px) !important; border-radius: 0; resize: none; }
+        .maximized { top: 0 !important; left: 0 !important; width: 100% !important; height: calc(100dvh - 30px) !important; border-radius: 0; border: none; resize: none; }
 
         .xp-button { background-color: var(--xp-bg-error); border: 1px solid #003c74; border-radius: 3px; padding: 3px 25px; font-family: Tahoma, sans-serif; font-size: 11px; color: black; box-shadow: inset 1px 1px 0px rgba(255,255,255,0.8), inset -1px -1px 0px rgba(0,0,0,0.2); cursor: pointer; outline: none; }
         .xp-button:hover { border: 1px solid #000; box-shadow: inset 1px 1px 0px rgba(255,255,255,0.8), inset -1px -1px 0px rgba(0,0,0,0.3); }
@@ -210,16 +211,16 @@
             color: white; text-shadow: 1px 1px 3px rgba(0,0,0,1); cursor: pointer; text-align: center; font-size: 11px; padding: 5px;
         }
         .desktop-icon img { width: 40px; height: 40px; margin-bottom: 6px; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.6)); }
-        .desktop-icon:hover { background: rgba(255,255,255,0.1); border-radius: 3px; border: 1px dotted rgba(255,255,255,0.5); }
+        .desktop-icon:hover { background: rgba(255,255,255,0.2); border-radius: 3px; border: 1px dotted rgba(255,255,255,0.5); }
 
         /* EXPLORADOR */
         .explorer-toolbar { background: #ece9d8; border-bottom: 1px solid #aca899; display: flex; flex-direction: column; font-size: 11px; flex-shrink: 0; }
-        .explorer-menu { display: flex; gap: 15px; padding: 2px 10px; border-bottom: 1px solid #fff; }
-        .explorer-actions { display: flex; align-items: center; padding: 4px 10px; gap: 15px; border-top: 1px solid #aca899; background: #ece9d8; }
-        .action-btn { display: flex; align-items: center; gap: 5px; padding: 2px 6px; cursor: pointer; border: 1px solid transparent; }
+        .explorer-menu { display: flex; gap: 15px; padding: 2px 10px; border-bottom: 1px solid #fff; overflow-x: auto; white-space: nowrap;}
+        .explorer-actions { display: flex; align-items: center; padding: 4px 10px; gap: 15px; border-top: 1px solid #aca899; background: #ece9d8; overflow-x: auto;}
+        .action-btn { display: flex; align-items: center; gap: 5px; padding: 2px 6px; cursor: pointer; border: 1px solid transparent; flex-shrink: 0;}
         .action-btn:hover { border: 1px solid #aca899; border-radius: 3px; background: #fff; box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1); }
         .explorer-address { background: #ece9d8; padding: 4px 10px; border-top: 1px solid #aca899; display: flex; align-items: center; gap: 5px; }
-        .address-box { background: white; border: 1px solid #7f9db9; flex: 1; padding: 3px 5px; display: flex; align-items: center; gap: 5px; box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1); }
+        .address-box { background: white; border: 1px solid #7f9db9; flex: 1; padding: 3px 5px; display: flex; align-items: center; gap: 5px; box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1); overflow-x: hidden; white-space: nowrap;}
         .explorer-body { flex: 1; display: flex; background: #fff; border-top: 1px solid #7f9db9; overflow: hidden; }
         .xp-sidebar { width: 220px; background: linear-gradient(to bottom, #74a0ea 0%, #4f80dd 100%); padding: 15px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; border-right: 1px solid #7f9db9; flex-shrink: 0;}
         .xp-sidebar-box { background: #d6e4f9; border-top-left-radius: 4px; border-top-right-radius: 4px; overflow: hidden; box-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
@@ -228,26 +229,105 @@
         .sidebar-link { display: flex; align-items: center; gap: 6px; color: #00136b; cursor: pointer; }
         .sidebar-link:hover { text-decoration: underline; color: #245edb; }
         .explorer-main { flex: 1; padding: 20px; overflow-y: auto; background: white; }
-        .explorer-item { display: inline-flex; flex-direction: column; align-items: center; width: 110px; padding: 10px; cursor: pointer; border: 1px solid transparent; text-align: center; vertical-align: top;}
+        .explorer-item { display: inline-flex; flex-direction: column; align-items: center; width: 100px; padding: 10px; cursor: pointer; border: 1px solid transparent; text-align: center; vertical-align: top;}
         .explorer-item:hover { background: #e5f3ff; border: 1px solid #7daef3; border-radius: 3px; }
         .explorer-item img { width: 44px; height: 44px; object-fit: contain; margin-bottom: 5px; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));}
-        
-        .xp-folder-small { width: 20px; height: 16px; margin-right: 5px; transform: scale(0.6); transform-origin: left center;}
 
         /* POPUP Volumen */
         #volume-popup {
-            display: none; position: absolute; bottom: 30px; right: 20px; background: #ece9d8;
+            display: none; position: absolute; bottom: 30px; right: 10px; background: #ece9d8;
             border: 1px solid #7f9db9; box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
             padding: 10px; width: 80px; flex-direction: column; align-items: center; z-index: 10001;
         }
         input[type=range][orient=vertical] { writing-mode: bt-lr; -webkit-appearance: slider-vertical; height: 100px; width: 20px; }
+
+        /* =========================================
+           DISEÑO RESPONSIVO (TELÉFONOS MÓVILES)
+           ========================================= */
+        @media (max-width: 768px) {
+            /* Ventanas a pantalla completa obligatoriamente */
+            .window {
+                width: 100% !important;
+                height: calc(100dvh - 30px) !important;
+                top: 0 !important;
+                left: 0 !important;
+                border: none !important;
+                border-radius: 0 !important;
+                resize: none !important;
+            }
+            
+            /* Ajustes del Menú Inicio para pantallas chicas */
+            #start-menu {
+                width: 100%;
+                height: calc(100dvh - 30px);
+                bottom: 30px;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                border-bottom: none;
+            }
+            .start-body {
+                flex-direction: column; /* Apilar columnas en celular */
+                overflow-y: auto;
+            }
+            .start-left, .start-right {
+                width: 100%;
+                height: auto;
+                border-left: none;
+            }
+            .start-right {
+                border-top: 1px solid #95bcee;
+            }
+            .all-programs-wrapper {
+                position: relative; /* Ajustar posición para que fluya en movil */
+                margin-top: 10px;
+            }
+            #all-programs-submenu {
+                left: 0;
+                width: 100%;
+                bottom: 38px;
+                max-height: 50vh;
+                overflow-y: auto;
+            }
+
+            /* Explorador en móvil */
+            .explorer-body {
+                flex-direction: column;
+            }
+            .xp-sidebar {
+                display: none; /* Ocultar barra azul en celulares para ahorrar espacio */
+            }
+            .explorer-main {
+                padding: 10px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            /* Ajustes de ventana de error para celular */
+            #win-error {
+                width: 90% !important;
+                height: auto !important;
+                top: 20% !important;
+                left: 5% !important;
+                border: 3px solid #0058e4 !important;
+            }
+
+            /* Bienvenida */
+            .welcome-text { font-size: 32px !important; }
+            .boot-logo-img { width: 80vw; }
+            
+            /* Bandeja de sistema */
+            .tray-area { padding: 0 5px; gap: 4px; }
+            #clock { font-size: 10px; }
+        }
     </style>
 </head>
 <body>
 
     <div id="black-overlay"></div>
 
-    <!-- 1. SECUENCIA DE ARRANQUE CORREGIDA (Cero parpadeos) -->
+    <!-- 1. SECUENCIA DE ARRANQUE -->
     <div id="boot-sequence">
         <div id="boot-screen">
             <div class="boot-logo-container">
@@ -261,7 +341,7 @@
         </div>
         <div id="welcome-screen" style="display: flex;">
             <div class="welcome-band-top"></div>
-            <h1 class="welcome-text">Welcome</h1>
+            <h1 class="welcome-text text-4xl md:text-5xl">Welcome</h1>
             <div class="welcome-band-bottom"></div>
         </div>
     </div>
@@ -269,30 +349,30 @@
     <!-- Pantallas extra sistema -->
     <div id="shutdown-screen">
         <div class="welcome-band-top"></div>
-        <div class="welcome-text">
-            <img src="https://c2techs.net/wp-content/uploads/2014/02/XP-logo.png" style="width: 120px;">
-            Windows is shutting down...
+        <div class="welcome-text flex-col md:flex-row text-2xl md:text-3xl">
+            <img src="https://c2techs.net/wp-content/uploads/2014/02/XP-logo.png" style="width: 120px;" class="mb-4 md:mb-0">
+            <span>Windows is shutting down...</span>
         </div>
         <div class="welcome-band-bottom"></div>
     </div>
 
     <div id="login-screen">
-        <!-- Interfaz Login (Oculta por defecto) -->
+        <!-- Interfaz Login (Responsive) -->
         <div class="welcome-band-top"></div>
-        <div class="flex items-center justify-center w-full h-full z-10 relative">
-            <div class="flex flex-col items-end pr-10 w-1/2">
-                <img src="https://c2techs.net/wp-content/uploads/2014/02/XP-logo.png" class="w-[220px] mb-6">
-                <span class="text-white text-xl tracking-wide drop-shadow-md">To begin, type your password</span>
+        <div class="flex flex-col md:flex-row items-center justify-center w-full h-full z-10 relative">
+            <div class="flex flex-col items-center md:items-end pr-0 md:pr-10 w-full md:w-1/2">
+                <img src="https://c2techs.net/wp-content/uploads/2014/02/XP-logo.png" class="w-[180px] md:w-[220px] mb-4 md:mb-6">
+                <span class="text-white text-lg md:text-xl tracking-wide drop-shadow-md text-center md:text-right">To begin, type your password</span>
             </div>
-            <div class="w-px h-[300px]" style="background: linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);"></div>
-            <div class="flex flex-col items-start pl-10 w-1/2">
+            <div class="w-[80%] md:w-px h-px md:h-[300px] my-6 md:my-0" style="background: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);"></div>
+            <div class="flex flex-col items-center md:items-start pl-0 md:pl-10 w-full md:w-1/2">
                 <div class="flex items-start gap-3 p-3 rounded-md" style="background: linear-gradient(to right, #245edb, #1941a5); border: 1px solid rgba(255,255,255,0.2); box-shadow: 2px 2px 5px rgba(0,0,0,0.3);">
                     <img src="https://raw.githubusercontent.com/BloopBleep/windows-xp-avatars/master/palm_tree.png" class="w-[60px] h-[60px] border-2 border-yellow-400 rounded-sm object-cover">
                     <div class="flex flex-col justify-center mt-1">
-                        <span class="text-white font-bold text-[17px] drop-shadow-md tracking-wide">Mauro San Martin</span>
+                        <span class="text-white font-bold text-[15px] md:text-[17px] drop-shadow-md tracking-wide">Mauro San Martin</span>
                         <span class="text-white text-xs mb-1 mt-1 font-medium">Type your password:</span>
                         <div class="flex items-center gap-1">
-                            <input type="password" id="login-password" class="w-[150px] h-[24px] px-2 text-black outline-none rounded-[3px] border border-gray-400" onkeydown="if(event.key === 'Enter') attemptLogin()">
+                            <input type="password" id="login-password" class="w-[120px] md:w-[150px] h-[24px] px-2 text-black outline-none rounded-[3px] border border-gray-400" onkeydown="if(event.key === 'Enter') attemptLogin()">
                             <button onclick="attemptLogin()" class="w-[24px] h-[24px] rounded-[3px] flex items-center justify-center shadow-md hover:brightness-110 active:scale-95 transition-all" style="background: linear-gradient(to bottom, #49c449, #258f25); border: 1px solid white;">
                                 <i class="fa-solid fa-arrow-right text-white text-xs"></i>
                             </button>
@@ -301,7 +381,7 @@
                 </div>
             </div>
         </div>
-        <div class="welcome-band-bottom flex justify-between items-center px-10 relative z-10">
+        <div class="welcome-band-bottom flex justify-center md:justify-between items-center px-4 md:px-10 relative z-10">
             <div class="flex items-center gap-2 cursor-pointer group" onclick="shutdownSystem()">
                 <div class="w-[28px] h-[28px] flex items-center justify-center rounded-[3px] border border-white shadow-sm group-hover:brightness-110" style="background: linear-gradient(to bottom, #e75c50, #cc2918);">
                     <i class="fa-solid fa-power-off text-white text-[12px]"></i>
@@ -325,9 +405,8 @@ Check to make sure any new hardware or software is properly installed.
 *** STOP: 0x000000ED (0x80F128D0, 0xC000009C, 0x00000000, 0x00000000)</div>
 
     <!-- ESCRITORIO -->
-    <div class="flex flex-col h-full flex-wrap content-start p-2 gap-2" id="desktop">
+    <div class="flex flex-col h-[calc(100%-30px)] flex-wrap content-start p-2 gap-2" id="desktop">
         <div class="desktop-icon" onclick="openExplorer('Proyectos')">
-            <!-- Carpeta dibujada en CSS puro -->
             <div class="xp-folder"><div class="xp-folder-tab"></div><div class="xp-folder-back"></div><div class="xp-folder-front"></div></div>
             <span>Mis Proyectos</span>
         </div>
@@ -378,14 +457,15 @@ Check to make sure any new hardware or software is properly installed.
                 </div>
                 
                 <div class="all-programs-wrapper group">
-                    <div class="all-programs-btn" onmouseenter="document.getElementById('all-programs-submenu').style.display='flex'">
+                    <div class="all-programs-btn" onclick="toggleAllProgramsMobile()" onmouseenter="if(window.innerWidth > 768) document.getElementById('all-programs-submenu').style.display='flex'">
                         <span>Todos los programas</span>
                         <span class="ap-arrow"></span>
                     </div>
                 </div>
             </div>
             
-            <div id="all-programs-submenu" onmouseleave="this.style.display='none'">
+            <!-- Submenu oculto (apilable en móvil) -->
+            <div id="all-programs-submenu" onmouseleave="if(window.innerWidth > 768) this.style.display='none'">
                 <div class="ap-item"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" class="w-5 h-5"> Accesorios</div>
                 <div class="ap-item" onclick="openExplorer('Juegos'); toggleStartMenu();"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" class="w-5 h-5"> Juegos</div>
                 <hr class="my-1 border-gray-300">
@@ -437,9 +517,9 @@ Check to make sure any new hardware or software is properly installed.
                     <div class="action-btn text-gray-400"><i class="fa-solid fa-circle-arrow-left text-green-600 opacity-50"></i> Atrás</div>
                     <div class="action-btn text-gray-400"><i class="fa-solid fa-circle-arrow-right text-green-600 opacity-50"></i></div>
                     <div class="action-btn"><img src="https://win98icons.alexmeub.com/icons/png/directory_up-0.png" class="w-5 h-5"> Arriba</div>
-                    <div class="w-px h-6 bg-gray-400 mx-1"></div>
+                    <div class="w-px h-6 bg-gray-400 mx-1 hidden md:block"></div>
                     <div class="action-btn"><img src="https://win98icons.alexmeub.com/icons/png/search_computer-0.png" class="w-5 h-5"> Búsqueda</div>
-                    <div class="action-btn"><img src="https://win98icons.alexmeub.com/icons/png/directory_open_file_mydocs-4.png" class="w-5 h-5"> Carpetas</div>
+                    <div class="action-btn hidden md:flex"><img src="https://win98icons.alexmeub.com/icons/png/directory_open_file_mydocs-4.png" class="w-5 h-5"> Carpetas</div>
                 </div>
                 <div class="explorer-address">
                     <span class="text-gray-600">Dirección</span>
@@ -470,8 +550,8 @@ Check to make sure any new hardware or software is properly installed.
                 </div>
                 
                 <div class="explorer-main">
-                    <div id="explorer-content" class="grid grid-cols-4 gap-4">
-                        <!-- Contenido dinámico -->
+                    <div id="explorer-content">
+                        <!-- Contenido dinámico grid -->
                     </div>
                 </div>
             </div>
@@ -510,7 +590,7 @@ Check to make sure any new hardware or software is properly installed.
             </div>
         </div>
         <div class="window-content bg-white flex flex-col">
-            <div class="flex gap-4 text-xs px-2 py-1 bg-[#ece9d8] border-b border-[#aca899] flex-shrink-0">
+            <div class="flex gap-4 text-xs px-2 py-1 bg-[#ece9d8] border-b border-[#aca899] flex-shrink-0 overflow-x-auto">
                 <span>Archivo</span><span>Edición</span><span>Formato</span><span>Ver</span><span>Ayuda</span>
             </div>
             <textarea class="flex-1 w-full p-2 text-[13px] outline-none resize-none overflow-y-auto" style="font-family: 'Lucida Console', monospace; border: none;">
@@ -541,7 +621,7 @@ Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplega
     </div>
 
     <!-- VENTANA PDF -->
-    <div id="win-pdf" class="window" style="width: 850px; height: 650px; top: 40px; left: 150px; min-width: 400px; min-height: 300px;">
+    <div id="win-pdf" class="window" style="width: 850px; height: 650px; top: 40px; left: 150px; min-width: 300px; min-height: 300px;">
         <div class="window-header" onmousedown="dragWindow(event, 'win-pdf')">
             <div class="title-drag-area">
                 <i class="fa-brands fa-adobe text-xs mr-2 text-red-300"></i>
@@ -554,7 +634,7 @@ Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplega
             </div>
         </div>
         <div class="window-content bg-[#525659] flex flex-col">
-            <div class="bg-gray-200 border-b border-gray-400 text-xs px-2 py-1 flex gap-4 flex-shrink-0">
+            <div class="bg-gray-200 border-b border-gray-400 text-xs px-2 py-1 flex gap-4 flex-shrink-0 overflow-x-auto">
                 <span>File</span><span>Edit</span><span>View</span><span>Document</span><span>Tools</span><span>Window</span><span>Help</span>
             </div>
             <div id="pdf-container" class="flex-1 w-full bg-[#525659]">
@@ -603,7 +683,7 @@ Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplega
             <img src="https://win98icons.alexmeub.com/icons/png/network_normal_two_pcs-0.png" class="w-4 h-4 cursor-pointer hover:opacity-80" title="Local Area Connection">
             <img src="https://win98icons.alexmeub.com/icons/png/loudspeaker_rays-0.png" class="w-4 h-4 cursor-pointer hover:opacity-80" title="Volume" onclick="toggleVolume()">
             
-            <span id="clock" class="ml-1 text-white text-xs" style="font-family: 'Tahoma', sans-serif;">12:00 PM</span>
+            <span id="clock" class="ml-1 text-white text-[10px] md:text-xs" style="font-family: 'Tahoma', sans-serif;">12:00 PM</span>
             
             <div id="volume-popup">
                 <span class="text-black mb-2 font-bold text-xs">Volumen</span>
@@ -616,7 +696,7 @@ Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplega
     </div>
 
     <script>
-        // --- LOGICA DE BOOT (Fix del Flash de Pantalla) ---
+        // --- LOGICA DE BOOT ---
         function bootSystem() {
             const bootSequence = document.getElementById('boot-sequence');
             const bootScreen = document.getElementById('boot-screen');
@@ -632,7 +712,6 @@ Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplega
             bootScreen.style.opacity = '1';
             bootScreen.style.zIndex = '2';
             
-            // Welcome screen se posiciona DETRAS del boot screen para evitar el flash
             welcomeScreen.style.display = 'flex';
             welcomeScreen.style.zIndex = '1';
             
@@ -645,11 +724,11 @@ Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplega
             document.querySelectorAll('.window').forEach(w => w.style.display = 'none');
 
             setTimeout(() => {
-                bootScreen.style.opacity = '0'; // Se desvanece y revela el Welcome Screen que está debajo
+                bootScreen.style.opacity = '0';
                 setTimeout(() => {
                     bootScreen.style.display = 'none';
                     setTimeout(() => {
-                        bootSequence.style.opacity = '0'; // Ahora se desvanece el Welcome revelando el escritorio
+                        bootSequence.style.opacity = '0';
                         setTimeout(() => { bootSequence.style.display = 'none'; }, 500);
                     }, 2000);
                 }, 300);
@@ -718,6 +797,13 @@ Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplega
                 menu.style.display = 'none'; submenu.style.display = 'none';
             } else { menu.style.display = 'flex'; }
         }
+        
+        function toggleAllProgramsMobile() {
+            if (window.innerWidth <= 768) {
+                const submenu = document.getElementById('all-programs-submenu');
+                submenu.style.display = submenu.style.display === 'flex' ? 'none' : 'flex';
+            }
+        }
 
         function toggleVolume() {
             const vol = document.getElementById('volume-popup');
@@ -733,6 +819,7 @@ Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplega
         }
 
         function dragWindow(e, id) {
+            if (window.innerWidth <= 768) return; // Deshabilitar drag en celular
             const win = document.getElementById(id);
             if(win.classList.contains('maximized')) return;
             bringToFront(win);
@@ -774,7 +861,7 @@ Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplega
         function closeGame() {
             const win = document.getElementById('win-game');
             win.style.display = 'none';
-            document.getElementById('game-iframe').src = ''; // Detiene el audio
+            document.getElementById('game-iframe').src = '';
         }
 
         // --- EXPLORADOR DE ARCHIVOS ---
@@ -789,7 +876,6 @@ Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplega
             'Juegos': [
                 { name: 'Duke_Nukem_3D.exe', iconUrl: 'https://static.wikia.nocookie.net/dukenukem/images/8/81/Nuke_it_by_nukkus-d33nfil-1_1.jpg', isExe: true, action: "showError('Duke_Nukem_3D.exe', 'To run this application, you first must install the following module:\\nDUK3D.GRP\\n\\nContact the application publisher for instructions about obtaining the file.')" },
                 { name: 'Doom.exe', iconUrl: 'https://cdn2.steamgriddb.com/icon_thumb/ef7d30fd7f6763d2c0c53229b27de2de.png', isExe: true, action: "triggerBSOD()" },
-                // SOLITARIO y BUSCAMINAS ABREN EN VENTANA INTERNA
                 { name: 'Solitario.exe', iconUrl: 'https://win98icons.alexmeub.com/icons/png/cards-0.png', isExe: true, action: "openGame('Solitario', 'https://solitairewebapp.com/', 'https://win98icons.alexmeub.com/icons/png/cards-0.png')" },
                 { name: 'Buscaminas.exe', iconUrl: 'https://win98icons.alexmeub.com/icons/png/minesweeper-0.png', isExe: true, action: "openGame('Buscaminas', 'https://minesweeperonline.com/', 'https://win98icons.alexmeub.com/icons/png/minesweeper-0.png')" }
             ]
@@ -801,6 +887,7 @@ Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplega
             document.getElementById('explorer-path').innerText = `C:\\Mis Documentos\\${folderName}`;
             
             const content = document.getElementById('explorer-content');
+            content.className = 'grid grid-cols-2 md:grid-cols-4 gap-4'; // Responsive grid
             content.innerHTML = '';
             
             folderData[folderName].forEach(item => {
@@ -852,10 +939,11 @@ Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplega
             const menu = document.getElementById('start-menu');
             const submenu = document.getElementById('all-programs-submenu');
             const btn = document.querySelector('.start-button');
+            const btnAllProgs = document.querySelector('.all-programs-btn');
             const volPopup = document.getElementById('volume-popup');
             const isVolIcon = e.target.title === 'Volume' || e.target.closest('[title="Volume"]');
 
-            if (menu.style.display === 'flex' && !menu.contains(e.target) && !btn.contains(e.target) && !submenu.contains(e.target)) {
+            if (menu.style.display === 'flex' && !menu.contains(e.target) && !btn.contains(e.target) && !submenu.contains(e.target) && !btnAllProgs.contains(e.target)) {
                 menu.style.display = 'none';
                 submenu.style.display = 'none';
             }
