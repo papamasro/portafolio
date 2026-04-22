@@ -414,9 +414,13 @@ Check to make sure any new hardware or software is properly installed.
             <div class="xp-folder"><div class="xp-folder-tab"></div><div class="xp-folder-back"></div><div class="xp-folder-front"></div></div>
             <span>Juegos</span>
         </div>
-        <div class="desktop-icon" onclick="openNotepad()">
+        <div class="desktop-icon" onclick="openNotepad('Resumen.txt')">
             <img src="https://win98icons.alexmeub.com/icons/png/notepad_file-0.png" alt="TXT">
             <span>Resumen.txt</span>
+        </div>
+        <div class="desktop-icon" onclick="openNotepad('LEEME.txt')">
+            <img src="https://win98icons.alexmeub.com/icons/png/notepad_file-0.png" alt="TXT">
+            <span>LEEME.txt</span>
         </div>
         <div class="desktop-icon" onclick="openPdfViewer('cv')">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/120px-PDF_file_icon.svg.png" alt="PDF">
@@ -571,8 +575,11 @@ Check to make sure any new hardware or software is properly installed.
                 <div class="control-btn btn-close" onclick="closeGame()">X</div>
             </div>
         </div>
-        <div class="window-content bg-black flex flex-col">
-            <iframe id="game-iframe" src="" width="100%" height="100%" frameborder="0" style="flex:1;"></iframe>
+        <div class="window-content bg-[#ece9d8] flex flex-col relative">
+            <div id="game-loader" class="absolute inset-0 flex items-center justify-center text-gray-600 text-sm font-bold z-0">
+                Cargando juego...
+            </div>
+            <iframe id="game-iframe" src="" width="100%" height="100%" frameborder="0" style="flex:1; position:relative; z-index:10; background: white;" onload="document.getElementById('game-loader').style.display='none'"></iframe>
         </div>
     </div>
 
@@ -581,7 +588,7 @@ Check to make sure any new hardware or software is properly installed.
         <div class="window-header" onmousedown="dragWindow(event, 'win-notepad')">
             <div class="title-drag-area">
                 <img src="https://win98icons.alexmeub.com/icons/png/notepad-1.png" class="w-4 h-4 mr-2">
-                <span style="font-weight: normal;">Resumen.txt - Bloc de notas</span>
+                <span id="notepad-title" style="font-weight: normal;">Bloc de notas</span>
             </div>
             <div class="window-controls">
                 <div class="control-btn btn-min" onclick="closeWindow('win-notepad')">_</div>
@@ -593,30 +600,7 @@ Check to make sure any new hardware or software is properly installed.
             <div class="flex gap-4 text-xs px-2 py-1 bg-[#ece9d8] border-b border-[#aca899] flex-shrink-0 overflow-x-auto">
                 <span>Archivo</span><span>Edición</span><span>Formato</span><span>Ver</span><span>Ayuda</span>
             </div>
-            <textarea class="flex-1 w-full p-2 text-[13px] outline-none resize-none overflow-y-auto" style="font-family: 'Lucida Console', monospace; border: none;">
-MAURO SAN MARTIN
-Full Stack Developer
-
-* PERFIL:
-Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplegando aplicaciones web escalables y soluciones de pago (QR/NFC).
-
-* EXPERIENCIA LABORAL:
-- ueno bank (Nov 2023 - Presente): Back End Engineer.
-  Desarrollo del sistema de pagos UENO. Stack: Java/Kotlin, Fastify.
-- Kavak.com (Nov 2021 - Nov 2023): Full Stack Developer.
-  Sistema de reserva internacional. Stack: Java, Spring, NodeJS.
-- Santander Tecnología (Ago 2020 - Nov 2021): Full Stack Developer.
-  Pagos QR y transferencias (MODO). Stack: Kotlin, MongoDB.
-
-* EDUCACIÓN Y IDIOMAS:
-- Ingeniería Informática (UADE)
-- Técnico Electrónico (E.T. N° 28)
-- Nivel de Inglés: C1 Advanced (Certificación EF SET 62/100)
-
-* CONTACTO:
-- Correo electrónico: mau.sm@hotmail.es
-- Teléfono: (+54 9) 11 6258 2376
-            </textarea>
+            <textarea id="notepad-content" class="flex-1 w-full p-2 text-[13px] outline-none resize-none overflow-y-auto" style="font-family: 'Lucida Console', monospace; border: none;"></textarea>
         </div>
     </div>
 
@@ -842,8 +826,70 @@ Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplega
         }
 
         // --- NOTEPAD ---
-        function openNotepad() {
+        const notepadContents = {
+            'Resumen.txt': `MAURO SAN MARTIN
+Full Stack Developer
+
+* PERFIL:
+Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplegando aplicaciones web escalables y soluciones de pago (QR/NFC).
+
+* EXPERIENCIA LABORAL:
+- ueno bank (Nov 2023 - Presente): Back End Engineer.
+  Desarrollo del sistema de pagos UENO. Stack: Java/Kotlin, Fastify.
+- Kavak.com (Nov 2021 - Nov 2023): Full Stack Developer.
+  Sistema de reserva internacional. Stack: Java, Spring, NodeJS.
+- Santander Tecnología (Ago 2020 - Nov 2021): Full Stack Developer.
+  Pagos QR y transferencias (MODO). Stack: Kotlin, MongoDB.
+
+* EDUCACIÓN Y IDIOMAS:
+- Ingeniería Informática (UADE)
+- Técnico Electrónico (E.T. N° 28)
+- Nivel de Inglés: C1 Advanced (Certificación EF SET 62/100)
+
+* CONTACTO:
+- Correo electrónico: mau.sm@hotmail.es
+- Teléfono: (+54 9) 11 6258 2376`,
+            
+            'LEEME.txt': `=====================================================
+    PORTAFOLIO INTERACTIVO OS XP - LEEME.TXT
+=====================================================
+
+¡Hola! Bienvenido a mi rincón en la web.
+
+Antes de que llames a soporte técnico porque creés que
+tu PC volvió en el tiempo, te aclaro:
+¡NO ES UN WINDOWS XP REAL! 
+
+Este portafolio es una simulación completa armada 100% 
+con HTML, CSS y JavaScript moderno. Sin máquinas virtuales,
+sin magia negra, puro código frontend.
+
+¿Por qué armar algo así?
+Porque decir "Soy Full Stack Senior" en un PDF es 
+aburrido. Quería demostrar mis habilidades recreando 
+una de las interfaces más icónicas y complejas de 
+replicar en web (con su sistema de ventanas, z-index,
+pantallazos azules y hasta secuencia de buteo). 
+
+Aprovechá para explorar:
+- Abri mis proyectos en las carpetas.
+- Chusmeá mi CV en el "Acrobat Reader".
+- Jugá un ratito al solitario o al buscaminas.
+- Hacé click en "Turn Off" o logueate de nuevo.
+- (Ojo con abrir el DOOM, puede que el sistema no lo aguante... guiño guiño).
+
+Espero que este viaje de nostalgia te guste tanto como 
+a mí me gustó programarlo.
+
+Saludos,
+Mauro San Martin
+=====================================================`
+        };
+
+        function openNotepad(fileName) {
             const win = document.getElementById('win-notepad');
+            document.getElementById('notepad-title').innerText = `${fileName} - Bloc de notas`;
+            document.getElementById('notepad-content').value = notepadContents[fileName];
             win.style.display = 'flex';
             bringToFront(win);
         }
@@ -853,6 +899,7 @@ Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplega
             const win = document.getElementById('win-game');
             document.getElementById('game-title').innerText = title;
             document.getElementById('game-icon').src = icon;
+            document.getElementById('game-loader').style.display = 'flex'; // Mostrar loader
             document.getElementById('game-iframe').src = url;
             win.style.display = 'flex';
             bringToFront(win);
@@ -862,6 +909,7 @@ Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplega
             const win = document.getElementById('win-game');
             win.style.display = 'none';
             document.getElementById('game-iframe').src = '';
+            document.getElementById('game-loader').style.display = 'flex';
         }
 
         // --- EXPLORADOR DE ARCHIVOS ---
@@ -876,7 +924,7 @@ Ingeniero en Informática (UADE). +10 años diseñando, desarrollando y desplega
             'Juegos': [
                 { name: 'Duke_Nukem_3D.exe', iconUrl: 'https://static.wikia.nocookie.net/dukenukem/images/8/81/Nuke_it_by_nukkus-d33nfil-1_1.jpg', isExe: true, action: "showError('Duke_Nukem_3D.exe', 'To run this application, you first must install the following module:\\nDUK3D.GRP\\n\\nContact the application publisher for instructions about obtaining the file.')" },
                 { name: 'Doom.exe', iconUrl: 'https://cdn2.steamgriddb.com/icon_thumb/ef7d30fd7f6763d2c0c53229b27de2de.png', isExe: true, action: "triggerBSOD()" },
-                { name: 'Solitario.exe', iconUrl: 'https://win98icons.alexmeub.com/icons/png/cards-0.png', isExe: true, action: "openGame('Solitario', 'https://solitairewebapp.com/', 'https://win98icons.alexmeub.com/icons/png/cards-0.png')" },
+                { name: 'Solitario.exe', iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Windows_XP_Solitaire_Icon.png/120px-Windows_XP_Solitaire_Icon.png', isExe: true, action: "openGame('Solitario', 'https://www.solitr.com/', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Windows_XP_Solitaire_Icon.png/120px-Windows_XP_Solitaire_Icon.png')" },
                 { name: 'Buscaminas.exe', iconUrl: 'https://win98icons.alexmeub.com/icons/png/minesweeper-0.png', isExe: true, action: "openGame('Buscaminas', 'https://minesweeperonline.com/', 'https://win98icons.alexmeub.com/icons/png/minesweeper-0.png')" }
             ]
         };
