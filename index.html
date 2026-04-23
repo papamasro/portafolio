@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mauro San Martin - Portfolio OS XP</title>
+    <!-- Favicon de Windows XP -->
+    <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Windows_XP_logo.svg/32px-Windows_XP_logo.svg.png">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -245,7 +248,6 @@
            DISEÑO RESPONSIVO (TELÉFONOS MÓVILES)
            ========================================= */
         @media (max-width: 768px) {
-            /* Ventanas a pantalla completa obligatoriamente */
             .window {
                 width: 100% !important;
                 height: calc(100dvh - 30px) !important;
@@ -256,7 +258,6 @@
                 resize: none !important;
             }
             
-            /* Ajustes del Menú Inicio para pantallas chicas */
             #start-menu {
                 width: 100%;
                 height: calc(100dvh - 30px);
@@ -267,7 +268,7 @@
                 border-bottom: none;
             }
             .start-body {
-                flex-direction: column; /* Apilar columnas en celular */
+                flex-direction: column; 
                 overflow-y: auto;
             }
             .start-left, .start-right {
@@ -279,7 +280,7 @@
                 border-top: 1px solid #95bcee;
             }
             .all-programs-wrapper {
-                position: relative; /* Ajustar posición para que fluya en movil */
+                position: relative; 
                 margin-top: 10px;
             }
             #all-programs-submenu {
@@ -290,12 +291,11 @@
                 overflow-y: auto;
             }
 
-            /* Explorador en móvil */
             .explorer-body {
                 flex-direction: column;
             }
             .xp-sidebar {
-                display: none; /* Ocultar barra azul en celulares para ahorrar espacio */
+                display: none; 
             }
             .explorer-main {
                 padding: 10px;
@@ -304,7 +304,6 @@
                 justify-content: center;
             }
             
-            /* Ajustes de ventana de error para celular */
             #win-error {
                 width: 90% !important;
                 height: auto !important;
@@ -313,11 +312,9 @@
                 border: 3px solid #0058e4 !important;
             }
 
-            /* Bienvenida */
             .welcome-text { font-size: 32px !important; }
             .boot-logo-img { width: 80vw; }
             
-            /* Bandeja de sistema */
             .tray-area { padding: 0 5px; gap: 4px; }
             #clock { font-size: 10px; }
         }
@@ -357,7 +354,6 @@
     </div>
 
     <div id="login-screen">
-        <!-- Interfaz Login (Responsive) -->
         <div class="welcome-band-top"></div>
         <div class="flex flex-col md:flex-row items-center justify-center w-full h-full z-10 relative">
             <div class="flex flex-col items-center md:items-end pr-0 md:pr-10 w-full md:w-1/2">
@@ -367,7 +363,7 @@
             <div class="w-[80%] md:w-px h-px md:h-[300px] my-6 md:my-0" style="background: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);"></div>
             <div class="flex flex-col items-center md:items-start pl-0 md:pl-10 w-full md:w-1/2">
                 <div class="flex items-start gap-3 p-3 rounded-md" style="background: linear-gradient(to right, #245edb, #1941a5); border: 1px solid rgba(255,255,255,0.2); box-shadow: 2px 2px 5px rgba(0,0,0,0.3);">
-                    <img src="https://raw.githubusercontent.com/BloopBleep/windows-xp-avatars/master/palm_tree.png" class="w-[60px] h-[60px] border-2 border-yellow-400 rounded-sm object-cover">
+                    <img src="https://archive.org/download/windows-xp-avatars/dog.png" class="w-[60px] h-[60px] border-2 border-yellow-400 rounded-sm object-cover bg-white">
                     <div class="flex flex-col justify-center mt-1">
                         <span class="text-white font-bold text-[15px] md:text-[17px] drop-shadow-md tracking-wide">Mauro San Martin</span>
                         <span class="text-white text-xs mb-1 mt-1 font-medium">Type your password:</span>
@@ -430,12 +426,17 @@ Check to make sure any new hardware or software is properly installed.
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/120px-PDF_file_icon.svg.png" alt="Certificado">
             <span>Certificado de Inglés.pdf</span>
         </div>
+        <div class="desktop-icon" onclick="window.open('https://www.linkedin.com/in/mauro-e-san-martin/', '_blank')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/120px-LinkedIn_logo_initials.png" alt="LinkedIn" style="object-fit: contain;">
+            <span>Mi LinkedIn.url</span>
+        </div>
     </div>
 
     <!-- MENÚ INICIO -->
     <div id="start-menu">
         <div class="start-header">
-            <img src="https://raw.githubusercontent.com/BloopBleep/windows-xp-avatars/master/palm_tree.png" alt="User">
+            <!-- Avatar Real Clásico de Windows XP (Perrito) -->
+            <img src="https://archive.org/download/windows-xp-avatars/dog.png" alt="User">
             <span class="ml-3 font-bold text-lg" style="text-shadow: 1px 1px 2px black;">Mauro San Martin</span>
         </div>
         <div class="start-body">
@@ -468,13 +469,23 @@ Check to make sure any new hardware or software is properly installed.
                 </div>
             </div>
             
-            <!-- Submenu oculto (apilable en móvil) -->
+            <!-- Submenu Todos Los Programas Lleno -->
             <div id="all-programs-submenu" onmouseleave="if(window.innerWidth > 768) this.style.display='none'">
-                <div class="ap-item"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" class="w-5 h-5"> Accesorios</div>
+                <div class="ap-item" onclick="openExplorer('Proyectos'); toggleStartMenu();"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" class="w-5 h-5"> Mis Proyectos</div>
                 <div class="ap-item" onclick="openExplorer('Juegos'); toggleStartMenu();"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" class="w-5 h-5"> Juegos</div>
                 <hr class="my-1 border-gray-300">
                 <div class="ap-item" onclick="window.open('https://papamasro.github.io/transporte/', '_blank');"><img src="https://win98icons.alexmeub.com/icons/png/msie1-4.png" class="w-5 h-5"> Radar AMBA</div>
                 <div class="ap-item" onclick="window.open('https://papamasro.github.io/grupoand2/', '_blank');"><i class="fa-solid fa-helmet-safety text-orange-500 w-5 text-center"></i> Grupo AND</div>
+                <div class="ap-item" onclick="window.open('https://papamasro.github.io/libreria/', '_blank');"><i class="fa-solid fa-shirt text-red-500 w-5 text-center"></i> Sublime Luna Roja</div>
+                <div class="ap-item" onclick="window.open('https://papamasro.github.io/renacer/', '_blank');"><i class="fa-solid fa-book-open text-green-500 w-5 text-center"></i> Renacer</div>
+                <hr class="my-1 border-gray-300">
+                <div class="ap-item" onclick="window.open('https://github.com/papamasro/', '_blank');"><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" class="w-5 h-5"> Mi GitHub</div>
+                <div class="ap-item" onclick="window.open('https://www.linkedin.com/in/mauro-e-san-martin/', '_blank');"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/120px-LinkedIn_logo_initials.png" class="w-5 h-5 object-contain"> Mi LinkedIn</div>
+                <hr class="my-1 border-gray-300">
+                <div class="ap-item" onclick="openPdfViewer('cv'); toggleStartMenu();"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/120px-PDF_file_icon.svg.png" class="w-5 h-5 object-contain"> Mi Curriculum.pdf</div>
+                <div class="ap-item" onclick="openPdfViewer('cert'); toggleStartMenu();"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/120px-PDF_file_icon.svg.png" class="w-5 h-5 object-contain"> Certificado Inglés.pdf</div>
+                <div class="ap-item" onclick="openNotepad('Resumen.txt'); toggleStartMenu();"><img src="https://win98icons.alexmeub.com/icons/png/notepad_file-0.png" class="w-5 h-5"> Resumen.txt</div>
+                <div class="ap-item" onclick="openNotepad('LEEME.txt'); toggleStartMenu();"><img src="https://win98icons.alexmeub.com/icons/png/notepad_file-0.png" class="w-5 h-5"> LEEME.txt</div>
             </div>
 
             <div class="start-right">
@@ -924,8 +935,8 @@ Mauro San Martin
             'Juegos': [
                 { name: 'Duke_Nukem_3D.exe', iconUrl: 'https://static.wikia.nocookie.net/dukenukem/images/8/81/Nuke_it_by_nukkus-d33nfil-1_1.jpg', isExe: true, action: "showError('Duke_Nukem_3D.exe', 'To run this application, you first must install the following module:\\nDUK3D.GRP\\n\\nContact the application publisher for instructions about obtaining the file.')" },
                 { name: 'Doom.exe', iconUrl: 'https://cdn2.steamgriddb.com/icon_thumb/ef7d30fd7f6763d2c0c53229b27de2de.png', isExe: true, action: "triggerBSOD()" },
-                { name: 'Solitario.exe', iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Windows_XP_Solitaire_Icon.png/120px-Windows_XP_Solitaire_Icon.png', isExe: true, action: "openGame('Solitario', 'https://www.solitr.com/', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Windows_XP_Solitaire_Icon.png/120px-Windows_XP_Solitaire_Icon.png')" },
-                { name: 'Buscaminas.exe', iconUrl: 'https://win98icons.alexmeub.com/icons/png/minesweeper-0.png', isExe: true, action: "openGame('Buscaminas', 'https://minesweeperonline.com/', 'https://win98icons.alexmeub.com/icons/png/minesweeper-0.png')" }
+                { name: 'Solitario.exe', iconUrl: 'https://win98icons.alexmeub.com/icons/png/cards-0.png', isExe: true, action: "openGame('Solitario', 'https://www.solitr.com/', 'https://win98icons.alexmeub.com/icons/png/cards-0.png')" },
+                { name: 'Buscaminas.exe', iconUrl: 'https://win98icons.alexmeub.com/icons/png/minesweeper-0.png', isExe: true, action: "openGame('Buscaminas', 'https://freeminesweeper.org/', 'https://win98icons.alexmeub.com/icons/png/minesweeper-0.png')" }
             ]
         };
 
