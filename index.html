@@ -167,16 +167,26 @@
         }
         .all-programs-btn { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 11px; font-weight: bold; cursor: pointer; width: 100%; height: 100%; }
         .all-programs-btn:hover { background: #2f71cd; color: white; }
-        .ap-arrow { display: inline-block; width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 6px solid #3eb45c; }
-        .all-programs-btn:hover .ap-arrow { border-left-color: white; }
 
+        /* Posicionamiento arreglado para submenus, ahora nacen al medio (50%) para superponerse */
         #all-programs-submenu {
-            position: absolute; bottom: 30px; left: 195px; width: 220px; background: white;
-            border: 1px solid #00136b; box-shadow: 2px 2px 5px rgba(0,0,0,0.4); display: none;
+            position: absolute; bottom: 38px; left: 50%; width: 220px; background: white;
+            border: 1px solid #245edb; box-shadow: 4px 4px 6px rgba(0,0,0,0.4); display: none;
             flex-direction: column; z-index: 10000; padding: 2px;
         }
-        .ap-item { display: flex; align-items: center; padding: 4px 6px; cursor: pointer; font-size: 11px; color: black; gap: 8px;}
+        
+        .nested-submenu {
+            position: absolute; left: 100%; top: -2px; width: 220px; background: white;
+            border: 1px solid #245edb; box-shadow: 4px 4px 6px rgba(0,0,0,0.4); display: none;
+            flex-direction: column; z-index: 10001; padding: 2px;
+        }
+
+        .ap-item { display: flex; align-items: center; justify-content: space-between; padding: 4px 6px; cursor: pointer; font-size: 11px; color: black; gap: 8px; position: relative;}
+        .ap-item-content { display: flex; align-items: center; gap: 8px; flex: 1; }
         .ap-item:hover { background: #2f71cd; color: white; }
+        .ap-item:hover > .nested-submenu { display: flex; }
+        .ap-arrow-right { border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 4px solid black; }
+        .ap-item:hover > .ap-arrow-right { border-left-color: white; }
 
         .start-footer {
             height: 38px; background: linear-gradient(to right, #428add 0%, #3078d7 100%);
@@ -289,7 +299,16 @@
                 bottom: 38px;
                 max-height: 50vh;
                 overflow-y: auto;
+                box-shadow: none;
+                border: none;
             }
+            /* Submenús en versión móvil para que se desplieguen hacia abajo */
+            .nested-submenu {
+                position: relative; left: 0; top: 0; width: 100%; box-shadow: none; border: none; padding-left: 20px;
+                background: #f0f0f0;
+            }
+            .ap-item { flex-wrap: wrap; }
+            .ap-arrow-right { display: none; }
 
             .explorer-body {
                 flex-direction: column;
@@ -410,6 +429,10 @@ Check to make sure any new hardware or software is properly installed.
             <div class="xp-folder"><div class="xp-folder-tab"></div><div class="xp-folder-back"></div><div class="xp-folder-front"></div></div>
             <span>Juegos</span>
         </div>
+        <div class="desktop-icon" onclick="window.open('https://papamas.itch.io/colapinto', '_blank')">
+            <i class="fa-solid fa-car-side text-red-600 text-[40px] drop-shadow-md mb-1"></i>
+            <span>Colapinto</span>
+        </div>
         <div class="desktop-icon" onclick="openNotepad('Resumen.txt')">
             <img src="https://win98icons.alexmeub.com/icons/png/notepad_file-0.png" alt="TXT">
             <span>Resumen.txt</span>
@@ -435,7 +458,7 @@ Check to make sure any new hardware or software is properly installed.
     <!-- MENÚ INICIO -->
     <div id="start-menu">
         <div class="start-header">
-            <!-- Avatar Real Clásico de Windows XP (Perrito) -->
+            <!-- Avatar Real Clásico de Windows XP -->
             <img src="https://archive.org/download/windows-xp-avatars/dog.png" alt="User">
             <span class="ml-3 font-bold text-lg" style="text-shadow: 1px 1px 2px black;">Mauro San Martin</span>
         </div>
@@ -464,28 +487,12 @@ Check to make sure any new hardware or software is properly installed.
                 <div class="all-programs-wrapper group">
                     <div class="all-programs-btn" onclick="toggleAllProgramsMobile()" onmouseenter="if(window.innerWidth > 768) document.getElementById('all-programs-submenu').style.display='flex'">
                         <span>Todos los programas</span>
-                        <span class="ap-arrow"></span>
+                        <!-- Boton verde estilo XP -->
+                        <div class="ml-1 flex items-center justify-center w-[18px] h-[18px] bg-[#3eb45c] rounded-full shadow-inner border border-white">
+                            <div class="w-0 h-0 border-t-[3px] border-b-[3px] border-l-[4px] border-transparent border-l-white ml-[2px]"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Submenu Todos Los Programas Lleno -->
-            <div id="all-programs-submenu" onmouseleave="if(window.innerWidth > 768) this.style.display='none'">
-                <div class="ap-item" onclick="openExplorer('Proyectos'); toggleStartMenu();"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" class="w-5 h-5"> Mis Proyectos</div>
-                <div class="ap-item" onclick="openExplorer('Juegos'); toggleStartMenu();"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" class="w-5 h-5"> Juegos</div>
-                <hr class="my-1 border-gray-300">
-                <div class="ap-item" onclick="window.open('https://papamasro.github.io/transporte/', '_blank');"><img src="https://win98icons.alexmeub.com/icons/png/msie1-4.png" class="w-5 h-5"> Radar AMBA</div>
-                <div class="ap-item" onclick="window.open('https://papamasro.github.io/grupoand2/', '_blank');"><i class="fa-solid fa-helmet-safety text-orange-500 w-5 text-center"></i> Grupo AND</div>
-                <div class="ap-item" onclick="window.open('https://papamasro.github.io/libreria/', '_blank');"><i class="fa-solid fa-shirt text-red-500 w-5 text-center"></i> Sublime Luna Roja</div>
-                <div class="ap-item" onclick="window.open('https://papamasro.github.io/renacer/', '_blank');"><i class="fa-solid fa-book-open text-green-500 w-5 text-center"></i> Renacer</div>
-                <hr class="my-1 border-gray-300">
-                <div class="ap-item" onclick="window.open('https://github.com/papamasro/', '_blank');"><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" class="w-5 h-5"> Mi GitHub</div>
-                <div class="ap-item" onclick="window.open('https://www.linkedin.com/in/mauro-e-san-martin/', '_blank');"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/120px-LinkedIn_logo_initials.png" class="w-5 h-5 object-contain"> Mi LinkedIn</div>
-                <hr class="my-1 border-gray-300">
-                <div class="ap-item" onclick="openPdfViewer('cv'); toggleStartMenu();"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/120px-PDF_file_icon.svg.png" class="w-5 h-5 object-contain"> Mi Curriculum.pdf</div>
-                <div class="ap-item" onclick="openPdfViewer('cert'); toggleStartMenu();"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/120px-PDF_file_icon.svg.png" class="w-5 h-5 object-contain"> Certificado Inglés.pdf</div>
-                <div class="ap-item" onclick="openNotepad('Resumen.txt'); toggleStartMenu();"><img src="https://win98icons.alexmeub.com/icons/png/notepad_file-0.png" class="w-5 h-5"> Resumen.txt</div>
-                <div class="ap-item" onclick="openNotepad('LEEME.txt'); toggleStartMenu();"><img src="https://win98icons.alexmeub.com/icons/png/notepad_file-0.png" class="w-5 h-5"> LEEME.txt</div>
             </div>
 
             <div class="start-right">
@@ -507,6 +514,43 @@ Check to make sure any new hardware or software is properly installed.
         <div class="start-footer">
             <div class="footer-btn" onclick="showLogoffScreen()"><div class="xp-logoff-btn"><i class="fa-solid fa-key text-[10px] text-white"></i></div> Log Off</div>
             <div class="footer-btn" onclick="shutdownSystem()"><div class="xp-turnoff-btn"><i class="fa-solid fa-power-off text-[10px] text-white"></i></div> Turn Off Computer</div>
+        </div>
+        
+        <!-- Submenu Todos Los Programas Desplegado Afuera -->
+        <!-- NOTA: left: 50% hace que se monte perfectamente sobre la columna derecha celeste imitando a XP -->
+        <div id="all-programs-submenu" onmouseleave="if(window.innerWidth > 768) this.style.display='none'">
+            
+            <div class="ap-item">
+                <div class="ap-item-content"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" class="w-5 h-5"> Mis Proyectos</div>
+                <div class="ap-arrow-right"></div>
+                <div class="nested-submenu">
+                    <div class="ap-item" onclick="window.open('https://papamasro.github.io/grupoand2/', '_blank');"><div class="ap-item-content"><i class="fa-solid fa-helmet-safety text-orange-500 w-5 text-center"></i> Grupo AND.exe</div></div>
+                    <div class="ap-item" onclick="window.open('https://papamasro.github.io/transporte/', '_blank');"><div class="ap-item-content"><i class="fa-solid fa-bus text-blue-500 w-5 text-center"></i> Radar AMBA.exe</div></div>
+                    <div class="ap-item" onclick="window.open('https://papamasro.github.io/libreria/', '_blank');"><div class="ap-item-content"><i class="fa-solid fa-shirt text-red-500 w-5 text-center"></i> Luna Roja.exe</div></div>
+                    <div class="ap-item" onclick="window.open('https://papamasro.github.io/renacer/', '_blank');"><div class="ap-item-content"><i class="fa-solid fa-book-open text-green-500 w-5 text-center"></i> Renacer.exe</div></div>
+                </div>
+            </div>
+
+            <div class="ap-item">
+                <div class="ap-item-content"><img src="https://win98icons.alexmeub.com/icons/png/directory_closed-4.png" class="w-5 h-5"> Juegos</div>
+                <div class="ap-arrow-right"></div>
+                <div class="nested-submenu">
+                    <div class="ap-item" onclick="window.open('https://papamas.itch.io/colapinto', '_blank');"><div class="ap-item-content"><i class="fa-solid fa-car-side text-red-600 w-5 text-center"></i> Colapinto.exe</div></div>
+                    <div class="ap-item" onclick="showError('Duke_Nukem_3D.exe', 'To run this application, you first must install the following module:\nDUK3D.GRP\n\nContact the application publisher for instructions about obtaining the file.')"><div class="ap-item-content"><img src="https://win98icons.alexmeub.com/icons/png/msg_warning-0.png" class="w-5 h-5"> Duke Nukem 3D.exe</div></div>
+                    <div class="ap-item" onclick="triggerBSOD()"><div class="ap-item-content"><i class="fa-solid fa-skull text-red-600 w-5 text-center"></i> Doom.exe</div></div>
+                    <div class="ap-item" onclick="openGame('Solitario', 'https://www.solitr.com/', 'https://win98icons.alexmeub.com/icons/png/cards-0.png')"><div class="ap-item-content"><img src="https://win98icons.alexmeub.com/icons/png/cards-0.png" class="w-5 h-5 object-contain"> Solitario.exe</div></div>
+                    <div class="ap-item" onclick="openGame('Buscaminas', 'https://freeminesweeper.org/', 'https://win98icons.alexmeub.com/icons/png/minesweeper-0.png')"><div class="ap-item-content"><img src="https://win98icons.alexmeub.com/icons/png/minesweeper-0.png" class="w-5 h-5 object-contain"> Buscaminas.exe</div></div>
+                </div>
+            </div>
+
+            <hr class="my-1 border-gray-300">
+            <div class="ap-item" onclick="window.open('https://github.com/papamasro/', '_blank');"><div class="ap-item-content"><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" class="w-5 h-5"> Mi GitHub</div></div>
+            <div class="ap-item" onclick="window.open('https://www.linkedin.com/in/mauro-e-san-martin/', '_blank');"><div class="ap-item-content"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/120px-LinkedIn_logo_initials.png" class="w-5 h-5 object-contain"> Mi LinkedIn</div></div>
+            <hr class="my-1 border-gray-300">
+            <div class="ap-item" onclick="openPdfViewer('cv'); toggleStartMenu();"><div class="ap-item-content"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/120px-PDF_file_icon.svg.png" class="w-5 h-5 object-contain"> Mi Curriculum.pdf</div></div>
+            <div class="ap-item" onclick="openPdfViewer('cert'); toggleStartMenu();"><div class="ap-item-content"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/120px-PDF_file_icon.svg.png" class="w-5 h-5 object-contain"> Certificado Inglés.pdf</div></div>
+            <div class="ap-item" onclick="openNotepad('Resumen.txt'); toggleStartMenu();"><div class="ap-item-content"><img src="https://win98icons.alexmeub.com/icons/png/notepad_file-0.png" class="w-5 h-5"> Resumen.txt</div></div>
+            <div class="ap-item" onclick="openNotepad('LEEME.txt'); toggleStartMenu();"><div class="ap-item-content"><img src="https://win98icons.alexmeub.com/icons/png/notepad_file-0.png" class="w-5 h-5"> LEEME.txt</div></div>
         </div>
     </div>
 
@@ -668,7 +712,8 @@ Check to make sure any new hardware or software is properly installed.
     <!-- BARRA DE TAREAS Y TRAY -->
     <div class="taskbar">
         <button class="start-button" onclick="toggleStartMenu()">
-            <img src="https://win98icons.alexmeub.com/icons/png/windows-0.png" class="w-4 h-4 mr-1 filter invert"> Inicio
+            <!-- Logo Original de Windows XP -->
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Windows_XP_logo.svg" class="w-[18px] h-[18px] mr-1 drop-shadow-md"> Inicio
         </button>
         <div class="flex-1"></div>
         <div class="tray-area relative">
@@ -933,8 +978,9 @@ Mauro San Martin
                 { name: 'Renacer.exe', faIcon: 'fa-solid fa-book-open text-green-500', link: 'https://papamasro.github.io/renacer/', isExe: true }
             ],
             'Juegos': [
+                { name: 'Colapinto.exe', faIcon: 'fa-solid fa-car-side text-red-600', link: 'https://papamas.itch.io/colapinto', isExe: true },
                 { name: 'Duke_Nukem_3D.exe', iconUrl: 'https://static.wikia.nocookie.net/dukenukem/images/8/81/Nuke_it_by_nukkus-d33nfil-1_1.jpg', isExe: true, action: "showError('Duke_Nukem_3D.exe', 'To run this application, you first must install the following module:\\nDUK3D.GRP\\n\\nContact the application publisher for instructions about obtaining the file.')" },
-                { name: 'Doom.exe', iconUrl: 'https://cdn2.steamgriddb.com/icon_thumb/ef7d30fd7f6763d2c0c53229b27de2de.png', isExe: true, action: "triggerBSOD()" },
+                { name: 'Doom.exe', faIcon: 'fa-solid fa-skull text-red-600', isExe: true, action: "triggerBSOD()" },
                 { name: 'Solitario.exe', iconUrl: 'https://win98icons.alexmeub.com/icons/png/cards-0.png', isExe: true, action: "openGame('Solitario', 'https://www.solitr.com/', 'https://win98icons.alexmeub.com/icons/png/cards-0.png')" },
                 { name: 'Buscaminas.exe', iconUrl: 'https://win98icons.alexmeub.com/icons/png/minesweeper-0.png', isExe: true, action: "openGame('Buscaminas', 'https://freeminesweeper.org/', 'https://win98icons.alexmeub.com/icons/png/minesweeper-0.png')" }
             ]
